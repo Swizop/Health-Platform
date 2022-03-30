@@ -58,10 +58,10 @@ public class HospitalSection extends Hospital {
     @Override
     public String toString() {
         String docString = "";
-        int i = 1;
+        Integer i = 1;
         for(Doctor d : doctors)
         {
-            docString += i + d.toString() + '\n';
+            docString += i.toString() + ". " + d.toString() + '\n';
             i += 1;
         }
 

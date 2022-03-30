@@ -16,8 +16,7 @@ public class Doctor extends Human implements  Comparable<Doctor>{
     public String toString() {
         return "Dr. "+ firstName + " " + lastName +
                 ", age=" + age +
-                ", years of experience: " + (LocalDate.now().getYear() - startYear) +
-                '}';
+                ", years of experience: " + (LocalDate.now().getYear() - startYear);
     }
 
 //    @Override

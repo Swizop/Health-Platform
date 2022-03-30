@@ -13,7 +13,7 @@ public class Main {
         while (true)
         {
             System.out.println("Logged in as " + currentUser);
-            System.out.println("0 - Stop; 1 - Create doctor; 2 - Get details of most experienced doctor; 3 - User specific actions; 4 - Switch user; 5 - Get all sections from hospitals");
+            System.out.println("0 - Stop; 1 - Create doctor; 2 - Get details of most experienced doctor; 3 - User specific actions; 4 - Switch user;\n5 - Get all sections from hospitals; 6 - Get all doctors; 7 - Create client profile");
             input = sc.nextLine();
             switch (input.trim()) {
                 case "0" -> {
@@ -27,15 +27,12 @@ public class Main {
                 }
                 case "3" -> {
                     ok = 1;
-                    while (ok == 1)
-                    {
+                    while (ok == 1) {
                         System.out.println("User Specific Actions: ");
-                        if(currentUser.compareTo("doctor") == 0)
-                        {
+                        if (currentUser.compareTo("doctor") == 0) {
                             System.out.println("a - Go back; b - Raise issue to minister");
                             input = sc.nextLine();
-                            switch (input.trim())
-                            {
+                            switch (input.trim()) {
                                 case "a" -> {
                                     ok = 0;
                                 }
@@ -44,25 +41,37 @@ public class Main {
                                     ok = 0;
                                 }
                             }
-                        }
-                        else
-                        {
-                            if (currentUser.compareTo("minister") == 0) {
-                                System.out.println("a - Go back; b - View reported issues");
-                                input = sc.nextLine();
-                                switch (input.trim()) {
-                                    case "a" -> {
-                                        ok = 0;
-                                    }
-                                    case "b" -> {
-                                        service.showMessages();
-                                    }
+                        } else if (currentUser.compareTo("minister") == 0) {
+                            System.out.println("a - Go back; b - View reported issues; c - Assign doctor to hospital section");
+                            input = sc.nextLine();
+                            switch (input.trim()) {
+                                case "a" -> {
+                                    ok = 0;
+                                }
+                                case "b" -> {
+                                    service.showMessages();
+                                }
+                                case "c" -> {
+                                    service.assignDoctor(sc);
                                 }
                             }
-                            else { break; }
+                        } else if (currentUser.compareTo("patient") == 0) {
+                            System.out.println("a - Go back; b - Make appointment;");
+                            input = sc.nextLine();
+                            switch (input.trim()) {
+                                case "a" -> {
+                                    ok = 0;
+                                }
+                                case "b" -> {
+                                    service.makeAppointment(sc);
+                                }
+                            }
+                        }
+                        else{
+                                break;
+                            }
                         }
                     }
-                }
                 case "4" -> {
                     System.out.println("Choose (write) one of the following: " + Arrays.deepToString(userTypes));
                     input = sc.nextLine().trim();
@@ -73,6 +82,12 @@ public class Main {
                 }
                 case "5" -> {
                     service.showSections();
+                }
+                case "6" -> {
+                    service.showAllDoctors();
+                }
+                case "7" -> {
+                    service.createNewPatient(sc);
                 }
             }
         }
