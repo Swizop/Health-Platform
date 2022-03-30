@@ -1,7 +1,7 @@
 # Medical-Appointment-Platform
 Medical Appointment Platform
 
-Types of objects: Doctor, Patient, HealthMinister, Hospital, Appointment, HospitalSpecialization, RecurringAppointment, PatientRecords, Address
+Types of objects: Human, Doctor, Patient, HealthMinister, Hospital, Appointment, HospitalSection, Message, Address
 
 List of actions that can be taken:
 1. Register a new doctor
