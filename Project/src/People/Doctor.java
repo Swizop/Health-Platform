@@ -26,9 +26,9 @@ public class Doctor extends Human implements  Comparable<Doctor>{
 
     @Override
     public int compareTo(Doctor o) {
-        if(startYear > o.startYear)
-            return -1;
         if(startYear < o.startYear)
+            return -1;
+        if(startYear > o.startYear)
             return 1;
         return 0;
     }

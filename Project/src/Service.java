@@ -15,10 +15,8 @@ import java.util.*;
 
 public class Service {
     private TreeSet<Doctor> doctors = new TreeSet<>();
-    private List<HospitalSection> hospitalSections = new ArrayList<>() {{
-        add(new HospitalSection(500, "Regina Maria", new Address("Bucharest", "Main Street", 4, "0131"), "Neurology", 100));
-        add(new HospitalSection(300, "City Hospital", new Address("Bucharest", "Second Street", 2, "1561"), "Infectious Diseases", 40));
-    }};
+    private HashMap<Integer, Address> addressHashMap = new HashMap<Integer, Address>();
+    private List<HospitalSection> hospitalSections = new ArrayList<>();
     private List<Patient> patients = new ArrayList<>();
     private HealthMinister healthMinister = HealthMinister.getHealthMinister();
 
@@ -38,7 +36,38 @@ public class Service {
 
         doctors.add(new Doctor(age, fn, ln, year));
     }
-
+    public void addDoctors(List<String[]> data)
+    {
+        Doctor d;
+        for(String[] arr : data) {
+            d = new Doctor(Integer.parseInt(arr[0]), arr[1], arr[2], Integer.parseInt(arr[3]));
+            doctors.add(d);
+        }
+    }
+    public void addClients(List<String[]> data)
+    {
+        Patient p;
+        for(String[] arr : data) {
+            p = new Patient(Integer.parseInt(arr[0]), arr[1], arr[2], arr[3], arr[4], LocalDate.now().getYear());
+            patients.add(p);
+        }
+    }
+    public void addAddresses(List<String[]> data)
+    {
+        Address a;
+        for(String[] arr : data) {
+            a = new Address(arr[1], arr[2], Integer.parseInt(arr[3]), arr[4]);
+            addressHashMap.put(Integer.parseInt(arr[0]), a);
+        }
+    }
+    public void addSections(List<String[]> data)
+    {
+        HospitalSection hs;
+        for(String[] arr : data) {
+            hs = new HospitalSection(Integer.parseInt(arr[0]), arr[1], addressHashMap.get(Integer.parseInt(arr[2])), arr[3], Integer.parseInt(arr[4]));
+            hospitalSections.add(hs);
+        }
+    }
     public Doctor getMostExperienced()
     {
         return doctors.first();
@@ -98,6 +127,16 @@ public class Service {
         }
     }
 
+    public void showAllPatients()
+    {
+        Integer i = 1;
+        for (Patient p : patients) {
+            System.out.println(i.toString() + '.');
+            System.out.println(p);
+            i += 1;
+        }
+    }
+
     public void createNewPatient(Scanner sc)
     {
         String firstName, lastName, email, phoneNumber;
@@ -120,10 +159,12 @@ public class Service {
 
     public void makeAppointment(Scanner sc)
     {
-        System.out.println("Choose index for hospital section (up to " + ((Integer)(hospitalSections.size())).toString() + ")");
+        System.out.println("Choose index for hospital section (from 1 to " + ((Integer)(hospitalSections.size())).toString() + ")");
         int hsIndex = sc.nextInt();
+        Random rand = new Random();
         sc.nextLine();
         HospitalSection hs = hospitalSections.get(hsIndex - 1);
+        ArrayList<Doctor> hsDoctors = hs.getDoctors();
         String date, time;
         LocalDateTime dateTime;
         System.out.println("Write your preferred date in the format: YYYY-MM-DD");
@@ -131,7 +172,9 @@ public class Service {
         System.out.println("Write your preferred time in the format: HH:MM");
         time = sc.nextLine();
         dateTime = LocalDateTime.parse(date + "T" + time + ":00");
-        Appointment a = new Appointment(dateTime, hs.getDoctors().get(0), patients.get(0), hs);
+        System.out.println("Please confirm your patient id (nr. from 1 to " + ((Integer)(patients.size())).toString() + ")");
+        hsIndex = sc.nextInt();
+        Appointment a = new Appointment(dateTime, hsDoctors.get(rand.nextInt(hsDoctors.size())), patients.get(hsIndex - 1), hs);
         System.out.println(a);
     }
 }
