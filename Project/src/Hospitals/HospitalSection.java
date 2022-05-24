@@ -30,6 +30,7 @@ public class HospitalSection extends Hospital {
     {
         this.doctors.add(doc);
     }
+    public void removeDoctor(Doctor doc) {this.doctors.remove(doc);}
 
     public String getSection() {
         return section;
